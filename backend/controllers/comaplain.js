@@ -4,6 +4,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncHandler = require("../middleware/catchAsyncError");
 const ApiFeatures = require("../utils/ApiFeatures");
 const department = require("../models/department");
+const exportPdf = require("../utils/exportPdf")
 
 exports.receiveComplain = catchAsyncHandler(async (req, res, next) => {
     const {
@@ -88,8 +89,26 @@ exports.editComplainStatus = catchAsyncHandler(async (req, res, next) => {
     })
 })
 
-const exportComplainPdf = catchAsyncHandler(async (req, res, next) => {
 
+// TODO: to be done
+exports.exportComplainPdf = catchAsyncHandler(async (req, res, next) => {
+    const data = await {
+        id: req.body._id,
+        first_name: req.body.first_name,
+        date: req.body.createdAt,
+        mobile_no: req.body.mobile_no,
+        address: req.body.address,
+        details: req.body.details,
+        department_name: req.body.department_name,
+        Remarks: req.body.remarks,
+        status: req.body.status,
+    }
+
+    await exportPdf(data, next);
+
+    res.status(200).json({
+        success: true
+    })
 })
 
 // receive complain

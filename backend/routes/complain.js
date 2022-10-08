@@ -1,5 +1,5 @@
 const express = require("express");
-const { receiveComplain, editComplainStatus, deleteComplain, getAllComplains, getComplainDetails, getDepartmentComplains } = require("../controllers/comaplain");
+const { receiveComplain, editComplainStatus, deleteComplain, getAllComplains, getComplainDetails, getDepartmentComplains, exportComplainPdf } = require("../controllers/comaplain");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const router = express.Router();
 
@@ -17,6 +17,9 @@ router.route("/complain/:id")
 
 router.route("/complain/hod/dept")
     .get(isAuthenticatedUser, getDepartmentComplains)
+
+router.route("/complain/pdf")
+    .post(isAuthenticatedUser, exportComplainPdf)   
 
 
 module.exports = router;
