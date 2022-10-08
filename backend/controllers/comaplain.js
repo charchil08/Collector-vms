@@ -4,7 +4,8 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncHandler = require("../middleware/catchAsyncError");
 const ApiFeatures = require("../utils/ApiFeatures");
 const department = require("../models/department");
-const exportPdf = require("../utils/exportPdf")
+const exportPdf = require("../utils/exportPdf");
+const { sendMail } = require("../utils/sendEmail");
 
 exports.receiveComplain = catchAsyncHandler(async (req, res, next) => {
     const {
@@ -42,6 +43,18 @@ exports.receiveComplain = catchAsyncHandler(async (req, res, next) => {
         department_name,
         serverity
     })
+
+    // send email tool : 
+    try {
+        await sendMail({
+            email: complain.email,
+            subject: `Complain registered on CollectorDesk`,
+            message: `Dear ${complain.first_name}, \n\n Your complain detailed as : ${complain.details} registered successfully with complain id : ${complain._id}. \n\n Thank you, \nCollector Desk`
+        })
+    }
+    catch {
+        return next(new ErrorHandler(err.message, 500));
+    }
 
     return res.status(201).json({
         success: true,

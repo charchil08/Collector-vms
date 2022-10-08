@@ -19,7 +19,7 @@ router.route("/complain/hod/dept")
     .get(isAuthenticatedUser, getDepartmentComplains)
 
 router.route("/complain/pdf")
-    .post(isAuthenticatedUser, exportComplainPdf)   
+    .post(isAuthenticatedUser, exportComplainPdf)    
 
 
 module.exports = router;
